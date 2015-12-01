@@ -54,6 +54,8 @@ if (isset($_POST['enter'])) {
 
 	if ($row['pass'] == $e_pass)  {
 		echo "Login succes!";
+	}else{
+		echo "Login or password is incorrect";
 	}
 	
 };
