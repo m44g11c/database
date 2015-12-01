@@ -36,7 +36,9 @@ if (isset($_POST['submit'])) {
 
 		die("Passwords dont match!");
 
-	};
+	};	
+
+};
 
 // login
 
@@ -48,12 +50,9 @@ if (isset($_POST['enter'])) {
 	$res = $query->execute();
 	// $result = $res->fetchAll();
 	// print_r($result);
-}
-
-
-	
-
 };
+
+
 
 
 // SELECT * FROM users WHERE pass = $e_pass
@@ -82,6 +81,7 @@ if (isset($_POST['enter'])) {
 
 <?php
 
-print_r($res);
+	print_r($result);
+	echo "$result";
 
 ?>
