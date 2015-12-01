@@ -46,10 +46,16 @@ if (isset($_POST['enter'])) {
 	$e_login = $_POST['e_login'];
 	$e_pass = md5($_POST['e_pass']);
 
-	$query = $db->prepare("SELECT * FROM `users` WHERE login = $e_login");
-	$res = $query->execute();
-	// $result = $res->fetchAll();
-	// print_r($result);
+	$stmt = $db->prepare("SELECT * FROM `users` WHERE login = :e_login");
+	$stmt->execute(array('e_login' => $e_login));
+
+	$row = $stmt->fetch(PDO::FETCH_LAZY);
+
+
+	if ($row['pass'] == $e_pass)  {
+		echo "Login succes!";
+	}
+	
 };
 
 
@@ -79,9 +85,4 @@ if (isset($_POST['enter'])) {
 	
 </form>
 
-<?php
 
-	print_r($result);
-	echo "$result";
-
-?>
