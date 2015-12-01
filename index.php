@@ -1,6 +1,6 @@
 <?php  
 
-	require_once 'tpl/database.php';
+	require_once 'cfg/database.php';
 	require_once 'tpl/register.php';
 
 // register
@@ -20,7 +20,7 @@
 			echo "Registration succesfull";
 		} else { 
 			echo "Passwords dont match!";
-		};	
+		}	
 
 	};
 
