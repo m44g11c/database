@@ -14,12 +14,6 @@
 			<p><input type="password" name="rpass"  placeholder="* Repeat password" required /></p>
 			<p><input type="submit" value="Registration" name="submit"/></p>
 		</form>
-
-		<form method="post" action="./">	
-			<p><input type="text" name="e_login"  placeholder="* Login" /></p>
-			<p><input type="password" name="e_pass"  placeholder="* Password" /></p>
-			<p><input type="submit" value="Login" name="enter" /></p>
-		</form>
 	</body>
 </html>
 
