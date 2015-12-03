@@ -6,7 +6,7 @@ require_once getcwd().'/cfg/database.php';
 require_once getcwd().'/tpl/register.php';
 // register
 
-if (isset($_POST['submit'])) {
+if (isset($_POST['submit']) && $_POST['submit'] != ''){
 	
 	$name = $_POST['name'];
 	$login = $_POST['login'];
@@ -27,7 +27,7 @@ if (isset($_POST['submit'])) {
 
 // login
 
-if (isset($_POST['enter'])) {
+if (isset($_POST['enter']) && $_POST['enter'] != ''){
 	$e_login = $_POST['e_login'];
 	$e_pass = md5($_POST['e_pass']);	
 
@@ -60,6 +60,32 @@ if (isset($_SESSION['name'])) {
 if (isset($_POST['logout'])) {
 	unset($_SESSION['name']);
 	session_destroy();
+	header('Location: /');
+};
+
+// class User
+
+class User {
+    
+    public $name;
+    public $login;
+    public $mail;
+    
+    
+    public function __construct($name, $login, $mail) {
+      $this->name = $name;
+      $this->login = $login;
+      $this->mail = $mail;
+    }
+    
+
+    public function() register{
+
+    }
+
+    public function() login{
+    	
+    }
 };
 
 
@@ -67,12 +93,9 @@ if (isset($_POST['logout'])) {
 
 
 
-// if (isset($e_login)) {
-// 	$_SESSION['name'] = $e_login;
-// 	$query = $db->prepare("UPDATE `users` SET auth_name = :e_login WHERE login = :e_login");
-// 	$query->bindValue(':e_login', $e_login, PDO::PARAM_STR);
-// 	$res = $query->execute();
-// };	
+
+
+
 
 
 
