@@ -1,5 +1,9 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('error_reporting', E_ALL);
+
+
 session_start();  
 
 require_once getcwd().'/cfg/database.php';
@@ -7,29 +11,21 @@ require_once getcwd().'/tpl/register.php';
 
 // class User
 class User {
-
 	
     public $name;
     public $login;
     public $pass;
     public $rpass;
     public $mail;
-    
-    public function __construct($name, $login, $mail, $pass, $rpass, $db){
-
-	   	$this->name = $name;
-		$this->login = $login;
-		$this->mail = $mail;
-		$this->pass = $pass;
-		$this->rpass = $rpass;
-		$this->db = $db;
-    }
-    
+    public $db;
+    public $e_login;
+    public $e_pass;
+        
     public function register(){
 		if ($this->pass == $this->rpass) {
 			$this->pass = md5($this->pass);
 			$query = $this->db->prepare("INSERT INTO `users` (name, login, pass, email) VALUES('$this->name', '$this->login', '$this->pass', '$this->mail')");
-			$res = $query->execute();
+			$result = $query->execute();
 			echo "Registration succesfull";
 		}else{ 
 			echo "Passwords dont match!";
@@ -37,33 +33,37 @@ class User {
     }
 
     public function login(){
-	    $e_login = $_POST['e_login'];
-		$e_pass = md5($_POST['e_pass']);	
-		$stmt = $db->prepare("SELECT * FROM `users` WHERE login = :e_login");
-		$stmt->bindValue(':e_login', $e_login, PDO::PARAM_STR);
-		$stmt->execute();
-		$row = $stmt->fetch(PDO::FETCH_LAZY);
-		if ($row['pass'] == $e_pass)  {
-			$logged = true;
-			$_SESSION['name'] = $e_login;
+		$query = $this->db->prepare("SELECT * FROM `users` WHERE login = :e_login");
+		$query->bindValue(':e_login', $this->e_login, PDO::PARAM_STR);
+		$query->execute();
+		$result = $query->fetch(PDO::FETCH_LAZY);
+		if ($result['pass'] == $this->e_pass)  {
+			$_SESSION['name'] = $this->e_login;
 		}else{
 			echo "Login or password is incorrect";
 		}
     }
-
 };
-
 // register
 if (isset($_POST['submit']) && $_POST['submit'] != ''){
-	$man = new User($_POST['name'], $_POST['login'], $_POST['mail'], $_POST['pass'], $_POST['rpass'], $db);
-	$man->register();
+	$user = new User();
+	$user->name = $_POST['name'];
+	$user->login = $_POST['login'];
+	$user->pass = $_POST['login'];
+	$user->rpass = $_POST['rpass'];
+	$user->mail = $_POST['mail'];
+	$user->db = $db;
+	$user->register();
 };
 // login
 if (isset($_POST['enter']) && $_POST['enter'] != ''){
-	$man = new User();
-	print_r($man);
-	
+	$user = new User();
+	$user->e_login = $_POST['e_login'];
+	$user->e_pass = md5($_POST['e_pass']);
+	$user->db = $db;
+	$user->login();
 };
+// logged
 if (isset($_SESSION['name'])) {
 	$username = $_SESSION['name'];
 	echo "Logged as: ";
@@ -78,8 +78,6 @@ if (isset($_POST['logout'])) {
 	session_destroy();
 	header('Location: /');
 };
-
-
 
 
 
